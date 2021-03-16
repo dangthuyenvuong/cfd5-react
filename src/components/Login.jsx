@@ -1,9 +1,28 @@
-import React from 'react'
+import React, { useImperativeHandle, useState } from 'react'
 import ReactDOM from 'react-dom'
 
-export default function Login() {
+export default React.forwardRef(function Login(prop, ref) {
+
+    let [isOpen, setIsOpen] = useState(false)
+
+    useImperativeHandle(ref, () => {
+        return {
+            open,
+            close
+        }
+    }, [])
+
+    function open() {
+        setIsOpen(true)
+    }
+
+    function close() {
+        setIsOpen(false)
+    }
+
+
     return ReactDOM.createPortal(
-        <div className="popup-form popup-login" style={{ display: 'none' }}>
+        <div className="popup-form popup-login" style={{ display: isOpen ? 'flex' : 'none' }}>
             <div className="wrap">
                 {/* login-form */}
                 <div className="ct_login" style={{ display: 'block' }}>
@@ -29,7 +48,7 @@ export default function Login() {
                             Google
                         </div>
                     </div>
-                    <div className="close">
+                    <div className="close" >
                         <img src="/img/close-icon.png" alt="" />
                     </div>
                 </div>
@@ -39,7 +58,7 @@ export default function Login() {
                     <input type="text" placeholder="Email" />
                     <div className="btn rect main btn-next">Tiếp theo</div>
                     <div className="back" />
-                    <div className="close">
+                    <div className="close" onClick={close}>
                         <img src="/img/close-icon.png" alt="" />
                     </div>
                 </div>
@@ -48,3 +67,4 @@ export default function Login() {
         document.getElementById('root2')
     )
 }
+)
