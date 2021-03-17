@@ -4,10 +4,10 @@ import './assets/css/custom.css'
 import Footer from './components/Footer';
 import Header from './components/Header';
 import Login from './components/Login';
-import Contact from './pages/contact';
-import Demo from './pages/demo';
-import Home from './pages/home'
-import Team from './pages/team';
+import Contact from './pages/Contact';
+import Demo from './pages/Demo';
+import Home from './pages/Home'
+import Team from './pages/Team';
 
 function App() {
   let inputRef = useRef();
