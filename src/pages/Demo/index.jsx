@@ -1,16 +1,19 @@
 import React, { useState } from 'react'
 
 export default function Demo({ num }) {
-    let [count, setCount] = useState(0)
+    let [count, setCount] = useState({
+        num: 1
+    })
 
 
     function _click() {
         // count = count + 1
-        setCount(count + 1)
+        count.num += 1
+        setCount({ ...count })
     }
     return (
         <div style={{ marginTop: 100, marginBottom: 100, textAlign: 'center' }}>
-            {count} count <br />
+            {count.num} count <br />
             <button onClick={_click}>Increment</button>
         </div>
     )

@@ -1,11 +1,28 @@
 import React from 'react'
-
+import { Link, NavLink, useHistory } from 'react-router-dom'
 export default function Header() {
+    let history = useHistory()
+
+    function menuOpen() {
+        document.body.classList.toggle('menu-is-show')
+    }
+
+    function closeMenu(e) {
+        document.body.classList.remove('menu-is-show')
+        document.querySelector('.loading-page').style.transform = 'scale(25)'
+        e.preventDefault()
+        setTimeout(() => {
+            console.log(e.target.href)
+            history.push(e.target.href.replace(window.location.origin, ''))
+            document.querySelector('.loading-page').style.transform = 'scale(0)'
+
+        }, 1000)
+    }
     return (
         <>
             <header id="header">
                 <div className="wrap">
-                    <div className="menu-hambeger">
+                    <div className="menu-hambeger" onClick={menuOpen}>
                         <div className="button">
                             <span />
                             <span />
@@ -13,10 +30,10 @@ export default function Header() {
                         </div>
                         <span className="text">menu</span>
                     </div>
-                    <a href="#" className="logo">
+                    <Link to="/" className="logo">
                         <img src="/img/logo.svg" alt="" />
                         <h1>CFD</h1>
-                    </a>
+                    </Link>
                     <div className="right">
                         <div className="have-login">
                             <div className="account">
@@ -27,7 +44,7 @@ export default function Header() {
                                     </div>
                                 </a>
                             </div>
-                            <div className="hamberger">
+                            <div className="hamberger" >
                             </div>
                             <div className="sub">
                                 <a href="#">Khóa học của tôi</a>
@@ -48,24 +65,24 @@ export default function Header() {
                         <a href="#">Đăng nhập</a>
                         <a href="#">Đăng ký</a>
                     </li>
-                    <li className="active">
-                        <a href="#">Trang chủ</a>
+                    <li >
+                        <NavLink exact onClick={closeMenu} to="/">Trang chủ</NavLink>
                     </li>
                     <li>
-                        <a href="#">CFD Team</a>
+                        <NavLink onClick={closeMenu} to="/team">CFD Team</NavLink>
                     </li>
                     <li>
-                        <a href="#">Khóa Học</a>
+                        <NavLink onClick={closeMenu} to="/course">Khóa Học</NavLink>
                     </li>
                     <li>
-                        <a href="#">Dự Án</a>
+                        <NavLink onClick={closeMenu} to="/project">Dự Án</NavLink>
                     </li>
                     <li>
-                        <a href="#">Liên hệ</a>
+                        <NavLink onClick={closeMenu} to="/contact">Liên hệ</NavLink>
                     </li>
                 </ul>
             </nav>
-            <div className="overlay_nav" />
+            <div className="overlay_nav" onClick={menuOpen} />
         </>
     )
 }

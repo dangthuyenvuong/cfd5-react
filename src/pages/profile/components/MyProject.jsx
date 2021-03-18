@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function MyProject() {
     return (
-        <div className="tab3" style={{ display: 'none' }}>
+        <div className="tab3">
             <div className="row">
                 <div className="col-md-6 course">
                     <div className="wrap">
@@ -58,6 +58,6 @@ export default function MyProject() {
                     <img src="/img/icon-upload.svg" alt="" /> Tải lên
                 </div>
             </div>
-        </div>
+        </div >
     )
 }

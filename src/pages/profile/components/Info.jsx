@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function Info() {
     return (
-        <div className="tab1" style={{ display: 'none' }}>
+        <div className="tab1">
             <label>
                 <p>Họ và tên<span>*</span></p>
                 <input type="text" placeholder="Nguyễn Văn A" />

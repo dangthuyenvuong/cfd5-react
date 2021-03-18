@@ -1,9 +1,10 @@
-import React, { useImperativeHandle, useState } from 'react'
+import React, { useImperativeHandle, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 
 export default React.forwardRef(function Login(prop, ref) {
 
-    let [isOpen, setIsOpen] = useState(false)
+    // let [isOpen, setIsOpen] = useState('flex')
+    let divRef = useRef()
 
     useImperativeHandle(ref, () => {
         return {
@@ -13,16 +14,21 @@ export default React.forwardRef(function Login(prop, ref) {
     }, [])
 
     function open() {
-        setIsOpen(true)
+        divRef.current.style.display = 'flex'
+        // setIsOpen('flex')
     }
 
     function close() {
-        setIsOpen(false)
+        divRef.current.style.display = 'none'
+
+        // setIsOpen('none')
     }
+
+    // let openStyle = isOpen ? 'flex' : 'none'
 
 
     return ReactDOM.createPortal(
-        <div className="popup-form popup-login" style={{ display: isOpen ? 'flex' : 'none' }}>
+        <div className="popup-form popup-login" ref={divRef} style={{ display: 'none' }}>
             <div className="wrap">
                 {/* login-form */}
                 <div className="ct_login" style={{ display: 'block' }}>

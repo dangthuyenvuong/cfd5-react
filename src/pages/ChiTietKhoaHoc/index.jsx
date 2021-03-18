@@ -1,6 +1,10 @@
 import React from 'react'
+import { useParams, useRouteMatch } from 'react-router'
 
 export default function ChiTietKhoaHoc() {
+
+  let { slug } = useParams()
+
   return (
     <main className="course-detail" id="main">
       <section className="banner style2" style={{ '--background': '#cde6fb' }}>

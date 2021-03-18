@@ -1,3 +1,39 @@
 .custom {
     font-size: 23px;
 }
+
+.register-course .wrap label {
+    position: relative;
+}
+
+.error-text {
+    position: absolute;
+    left: 231px;
+    width: 100% !important;
+    bottom: -19px;
+    font-size: 13px;
+    color: #c00000;
+    font-weight: 100;
+}
+
+.nav ul li.active {
+    background: unset;
+}
+
+.nav ul li a.active {
+    background: #00afab;
+    color: white;
+}
+
+.loading-page {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 100px;
+    height: 100px;
+    background: #20afab;
+    border-radius: 100%;
+    transform: scale(0);
+    transition: all .5s ease;
+    z-index: 1000;
+}
