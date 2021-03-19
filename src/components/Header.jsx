@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link, NavLink, useHistory } from 'react-router-dom'
+import { AContext } from '../App'
 export default function Header() {
     let history = useHistory()
+    let { login, handleLogin } = useContext(AContext)
 
     function menuOpen() {
         document.body.classList.toggle('menu-is-show')
@@ -18,6 +20,10 @@ export default function Header() {
 
         }, 1000)
     }
+
+
+
+
     return (
         <>
             <header id="header">
@@ -35,27 +41,36 @@ export default function Header() {
                         <h1>CFD</h1>
                     </Link>
                     <div className="right">
-                        <div className="have-login">
-                            <div className="account">
-                                <a href="#" className="info">
-                                    <div className="name">Trần Lê Trọng Nghĩa</div>
-                                    <div className="avatar">
-                                        <img src="/img/avt.png" alt="" />
+                        {
+                            login ? (
+                                <div className="have-login">
+                                    <div className="account">
+                                        <a href="#" className="info">
+                                            <div className="name">Trần Lê Trọng Nghĩa</div>
+                                            <div className="avatar">
+                                                <img src="/img/avt.png" alt="" />
+                                            </div>
+                                        </a>
                                     </div>
-                                </a>
-                            </div>
-                            <div className="hamberger" >
-                            </div>
-                            <div className="sub">
-                                <a href="#">Khóa học của tôi</a>
-                                <a href="#">Thông tin tài khoản</a>
-                                <a href="#">Đăng xuất</a>
-                            </div>
-                        </div>
-                        {/* <div class="not-login bg-none">
-                    <a href="#" class="btn-register">Đăng nhập</a>
-                    <a href="login.html" class="btn main btn-open-login">Đăng ký</a>
-                </div> */}
+                                    <div className="hamberger" >
+                                    </div>
+                                    <div className="sub">
+                                        <a href="#">Khóa học của tôi</a>
+                                        <Link to="/thong-tin-ca-nhan">Thông tin tài khoản</Link>
+                                        <a href="#">Đăng xuất</a>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div class="not-login bg-none">
+                                    <a href="#" class="btn-register" onClick={handleLogin}>Đăng nhập</a>
+                                    <a href="login.html" class="btn main btn-open-login">Đăng ký</a>
+                                </div>
+                            )
+                        }
+
+
+
+
                     </div>
                 </div>
             </header>

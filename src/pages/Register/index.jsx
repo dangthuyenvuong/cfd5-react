@@ -1,6 +1,93 @@
-import React from 'react'
+import React, { useState } from 'react'
+
 
 export default function Register() {
+
+    let [form, setForm] = useState({
+        name: '',
+        phone: '',
+        email: '',
+        website: '',
+        title: '',
+        content: '',
+        coin: false,
+        gender: 'male',
+        gender2: '',
+        payment: 'chuyen-khoan'
+
+    })
+
+    let [error, setError] = useState({
+        name: '',
+        phone: '',
+        email: '',
+        website: '',
+        title: '',
+        content: '',
+        coin: false
+    })
+
+
+    function inputChange(e) {
+        let name = e.target.name,
+            value = e.target.value,
+            type = e.target.type
+
+        if (type === 'checkbox') {
+            value = e.target.checked
+        }
+
+        setForm({
+            ...form,
+            [name]: value
+        })
+    }
+
+    function btnRegister() {
+
+        let errorObj = {}
+        if (!form.name) {
+            errorObj.name = 'Ho va ten khong duoc de trong'
+        }
+
+        if (!form.email) {
+            errorObj.email = 'Email khong duoc de trong'
+        } else if (!/^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/i.test(form.email)) {
+            errorObj.email = 'khong dung dinh dang Email'
+        }
+
+        if (!form.phone) {
+            errorObj.phone = 'SO dien thoai khong duoc de trong'
+        }
+
+        if (!form.title) {
+            errorObj.title = 'Tieu de khong duoc de trong'
+        }
+
+        if (form.website && !/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/i.test(form.website)) {
+            errorObj.website = 'Website khong dung dinh dang url'
+        }
+
+        if (form.content === '') {
+            errorObj.content = 'Noi dung khong duoc de trong'
+        }
+
+        setError(errorObj)
+
+        console.log(form)
+        if (Object.keys(errorObj).length === 0) {
+            alert('Thanh cong')
+        }
+
+    }
+
+    let _selectCustom = (value) => {
+        setForm({
+            ...form,
+            payment: value
+        })
+    }
+
     return (
         <main className="register-course" id="main">
             <section>
@@ -16,19 +103,26 @@ export default function Register() {
                         <div className="form">
                             <label>
                                 <p>Họ và tên<span>*</span></p>
-                                <input type="text" placeholder="Họ và tên bạn" />
+                                <input value={form.name} onChange={inputChange} type="text" name="name" placeholder="Họ và tên bạn" />
+                                {error.name && <p className="error-text">{error.name}</p>}
                             </label>
                             <label>
-                                <p>Số điện thoại<span>*</span></p>
-                                <input type="text" placeholder="Số điện thoại" />
+                                <p>Số điện thoại</p>
+                                <input value={form.phone} onChange={inputChange} type="text" name="phone" placeholder="Số điện thoại" />
+                                {error.phone && <p className="error-text">{error.phone}</p>}
+
                             </label>
                             <label>
                                 <p>Email<span>*</span></p>
-                                <input type="text" placeholder="Email của bạn" />
+                                <input value={form.email} onChange={inputChange} type="text" name="email" placeholder="Email của bạn" />
+                                {error.email && <p className="error-text">{error.email}</p>}
+
                             </label>
                             <label>
-                                <p>URL Facebook<span>*</span></p>
-                                <input type="text" placeholder="https://facebook.com" />
+                                <p>Facebook</p>
+                                <input value={form.website} onChange={inputChange} type="text" name="website" placeholder="Đường dẫn website http://" />
+                                {error.website && <p className="error-text">{error.website}</p>}
+
                             </label>
                             <label className="disable">
                                 <p>Sử dụng COIN</p>
@@ -36,8 +130,36 @@ export default function Register() {
                                     Hiện có <strong>300 COIN</strong>
                                     {/* Giảm giá còn <span><strong>5.800.000 VND</strong>, còn lại 100 COIN</span> */}
                                     {/* Cần ít nhất 200 COIN để giảm giá */}
-                                    <input type="checkbox" defaultChecked="checked" />
+                                    <input type="checkbox" name="coin" checked={form.coin} onChange={inputChange} />
                                     <span className="checkmark" />
+                                </div>
+                            </label>
+                            <label className="disable">
+                                <p>Gioi tinh</p>
+                                <div className="checkcontainer">
+
+                                    <input type="radio" name="gender" value="male" checked={form.gender === 'male'} onChange={inputChange} /> Female
+                                    <span className="checkmark" />
+                                </div>
+                            </label>
+                            <label className="disable">
+                                <div className="checkcontainer">
+
+
+
+                                    <input type="radio" name="gender" value="female" checked={form.gender === 'female'} onChange={inputChange} /> Female
+                                    <span className="checkmark" />
+                                </div>
+                            </label>
+                            <label className="disable">
+                                <p>Gioi tinh</p>
+                                <div className="checkcontainer">
+
+                                    <select name="gender2" id="" value={form.gender2} onChange={inputChange} >
+                                        <option value="" >---Gender---</option>
+                                        <option value="male" >Male</option>
+                                        <option value="female" >Female</option>
+                                    </select>
                                 </div>
                             </label>
                             <label>
@@ -45,8 +167,8 @@ export default function Register() {
                                 <div className="select">
                                     <div className="head">Chuyển khoản</div>
                                     <div className="sub">
-                                        <a href="#">Chuyển khoản</a>
-                                        <a href="#">Thanh toán tiền mặt</a>
+                                        <a href="#" onClick={() => _selectCustom('chuyen-khoan')}>Chuyển khoản</a>
+                                        <a href="#" onClick={_selectCustom.bind(null, 'tien-mat')}>Thanh toán tiền mặt</a>
                                     </div>
                                 </div>
                             </label>
@@ -54,7 +176,7 @@ export default function Register() {
                                 <p>Ý kiến cá nhân</p>
                                 <input type="text" placeholder="Mong muốn cá nhân và lịch bạn có thể học." />
                             </label>
-                            <div className="btn main rect">đăng ký</div>
+                            <div className="btn main rect" onClick={btnRegister}>đăng ký</div>
                         </div>
                     </div>
                 </div>

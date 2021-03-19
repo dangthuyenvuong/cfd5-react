@@ -5,11 +5,11 @@ import Terminal from "./components/Terminal";
 import Gallery from "./components/Gallery";
 import Action from "./components/Action";
 import Login from "../../components/Login";
+import MainLayout from "../../layout/MainLayout";
 
 export default function Home() {
     return (
-        <>
-
+        <MainLayout>
             <main className="homepage" id="main">
                 <Banner />
                 <CourseList />
@@ -41,6 +41,6 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-        </>
+        </MainLayout>
     )
 }

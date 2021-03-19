@@ -1,10 +1,24 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import MainLayout from '../../layout/MainLayout'
 
 export default function Demo({ num }) {
     let [count, setCount] = useState({
         num: 1
     })
+    let [count2, setCount2] = useState({
+        num: 1
+    })
 
+    useEffect(() => {
+        console.log('useEffect')
+        return () => {
+            console.log('distroy useEffect')
+        }
+    }, [])
+
+
+
+    console.log('render')
 
     function _click() {
         // count = count + 1
@@ -12,10 +26,12 @@ export default function Demo({ num }) {
         setCount({ ...count })
     }
     return (
-        <div style={{ marginTop: 100, marginBottom: 100, textAlign: 'center' }}>
-            {count.num} count <br />
-            <button onClick={_click}>Increment</button>
-        </div>
+        <MainLayout>
+            <div style={{ marginTop: 100, marginBottom: 100, textAlign: 'center' }}>
+                {count.num} count <br />
+                <button onClick={_click}>Increment</button>
+            </div>
+        </MainLayout>
     )
 }
 
