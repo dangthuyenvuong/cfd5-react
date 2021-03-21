@@ -6,7 +6,6 @@ import Info from './components/Info'
 import MyProject from './components/MyProject'
 import { Redirect, Route, Switch, useRouteMatch, Prompt } from 'react-router'
 import { NavLink } from 'react-router-dom'
-import MainLayout from '../../layout/MainLayout'
 import { AContext } from '../../App'
 export default function Profile() {
     let { url } = useRouteMatch()
@@ -16,7 +15,7 @@ export default function Profile() {
     if (!login) return <Redirect path="/" />
 
     return (
-        <MainLayout>
+        <>
             <Prompt message="Ban co chac chan muon roi khoi?" />
             <main className="profile" id="main">
                 <section>
@@ -53,6 +52,6 @@ export default function Profile() {
                 </section>
             </main>
 
-        </MainLayout>
+        </>
     )
 }
