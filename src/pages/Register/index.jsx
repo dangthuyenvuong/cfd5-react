@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
-
+import React, { useReducer, useState } from 'react'
+import useFormValidate from '../../core/useFormValidate'
+import reducer from './reducer'
 
 export default function Register() {
 
-    let [form, setForm] = useState({
+    let { form, error, inputChange, check } = useFormValidate({
         name: '',
         phone: '',
         email: '',
@@ -15,77 +16,56 @@ export default function Register() {
         gender2: '',
         payment: 'chuyen-khoan'
 
-    })
-
-    let [error, setError] = useState({
-        name: '',
-        phone: '',
-        email: '',
-        website: '',
-        title: '',
-        content: '',
-        coin: false
-    })
-
-
-    function inputChange(e) {
-        let name = e.target.name,
-            value = e.target.value,
-            type = e.target.type
-
-        if (type === 'checkbox') {
-            value = e.target.checked
+    }, {
+        rule: {
+            name: {
+                required: true
+            },
+            phone: {
+                required: true,
+                pattern: 'phone'
+            },
+            email: {
+                required: true,
+                pattern: 'email'
+            },
+            website: {
+                required: true,
+                pattern: /^(?:http(s)?:\/\/)?www.facebook.com\/[\w.-]+$/i
+            }
+        },
+        message: {
+            name: {
+                required: 'Họ và tên không được để trống'
+            },
+            email: {
+                required: 'Địa chỉ Email không được để trống',
+                pattern: 'Địa chỉ Email phải thuộc định dạng example@gmail.com'
+            }
         }
+    })
 
-        setForm({
-            ...form,
-            [name]: value
-        })
-    }
+
+
 
     function btnRegister() {
 
-        let errorObj = {}
-        if (!form.name) {
-            errorObj.name = 'Ho va ten khong duoc de trong'
-        }
+        let error = check()
 
-        if (!form.email) {
-            errorObj.email = 'Email khong duoc de trong'
-        } else if (!/^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/i.test(form.email)) {
-            errorObj.email = 'khong dung dinh dang Email'
-        }
-
-        if (!form.phone) {
-            errorObj.phone = 'SO dien thoai khong duoc de trong'
-        }
-
-        if (!form.title) {
-            errorObj.title = 'Tieu de khong duoc de trong'
-        }
-
-        if (form.website && !/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/i.test(form.website)) {
-            errorObj.website = 'Website khong dung dinh dang url'
-        }
-
-        if (form.content === '') {
-            errorObj.content = 'Noi dung khong duoc de trong'
-        }
-
-        setError(errorObj)
-
-        console.log(form)
-        if (Object.keys(errorObj).length === 0) {
+        if (Object.keys(error).length === 0) {
             alert('Thanh cong')
         }
 
     }
 
     let _selectCustom = (value) => {
-        setForm({
-            ...form,
-            payment: value
-        })
+        // dispatch({
+        //     type: 'INPUT_CHANGE',
+        //     payload: {
+        //         ...form,
+        //         payment: value
+        //     }
+        // })
     }
 
     return (

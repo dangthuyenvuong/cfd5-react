@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { Children, useContext } from 'react'
 import Coin from './components/Coin'
 import MyCourse from './components/MyCourse'
 import HistoryPayment from './components/HistoryPayment'
@@ -6,17 +6,16 @@ import Info from './components/Info'
 import MyProject from './components/MyProject'
 import { Redirect, Route, Switch, useRouteMatch, Prompt } from 'react-router'
 import { NavLink } from 'react-router-dom'
-import { AContext } from '../../App'
-export default function Profile() {
+import useAuth from '../../core/useAuth'
+export default function Profile({ children }) {
     let { url } = useRouteMatch()
 
 
-    let { login } = useContext(AContext)
-    if (!login) return <Redirect path="/" />
+    let { user } = useAuth()
 
     return (
         <>
-            <Prompt message="Ban co chac chan muon roi khoi?" />
+
             <main className="profile" id="main">
                 <section>
                     <div className="top-info">
@@ -25,7 +24,7 @@ export default function Profile() {
                             <img src="/img/avatar-lg.png" alt="" />
                             <div className="camera" />
                         </div>
-                        <div className="name">trần nghĩa</div>
+                        <div className="name">{user.name}</div>
                         <p className="des">Thành viên của team CFD1-OFFLINE</p>
                     </div>
                     <div className="container">
@@ -38,14 +37,7 @@ export default function Profile() {
                                 <NavLink to={`${url}/coin`}>Quản lý COIN của tôi</NavLink>
                             </div>
                             <div className="tab-content">
-                                <Switch>
-
-                                    <Route path={`${url}/course`} component={MyCourse} />
-                                    <Route path={`${url}/project`} component={MyProject} />
-                                    <Route path={`${url}/hisotry-payment`} component={HistoryPayment} />
-                                    <Route path={`${url}/coin`} component={Coin} />
-                                    <Route exact path={url} component={Info} />
-                                </Switch>
+                                {children}
                             </div>
                         </div>
                     </div>

@@ -1,10 +1,33 @@
 import React, { useImperativeHandle, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
+import useAuth from '../core/useAuth'
+import useFormValidate from '../core/useFormValidate'
 
 export default React.forwardRef(function Login(prop, ref) {
-
-    // let [isOpen, setIsOpen] = useState('flex')
+    let { form, inputChange, error, check } = useFormValidate({
+        username: '',
+        password: ''
+    }, {
+        rule: {
+            username: {
+                required: true,
+                pattern: 'email'
+            },
+            password: {
+                required: true,
+                min: 6,
+                max: 32,
+                pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]*$/
+            }
+        },
+        message: {
+            password: {
+                pattern: 'passoword phải chứa ký tự thường, hoa, số và ký tự đặc biệt'
+            }
+        }
+    })
     let divRef = useRef()
+    let { handleLogin } = useAuth()
 
     useImperativeHandle(ref, () => {
         return {
@@ -15,26 +38,36 @@ export default React.forwardRef(function Login(prop, ref) {
 
     function open() {
         divRef.current.style.display = 'flex'
-        // setIsOpen('flex')
     }
 
     function close() {
         divRef.current.style.display = 'none'
 
-        // setIsOpen('none')
     }
 
-    // let openStyle = isOpen ? 'flex' : 'none'
-
+    function _login() {
+        let error = check()
+        if (Object.keys(error).length === 0) {
+            handleLogin(form)
+            close()
+        }
+    }
 
     return ReactDOM.createPortal(
-        <div className="popup-form popup-login" ref={divRef} style={{ display: 'none' }}>
+        <div className="popup-form popup-login" id="popupLogin" ref={divRef} style={{ display: 'none' }}>
             <div className="wrap">
                 {/* login-form */}
                 <div className="ct_login" style={{ display: 'block' }}>
                     <h2 className="title">Đăng nhập</h2>
-                    <input type="text" placeholder="Email / Số điện thoại" />
-                    <input type="password" placeholder="Mật khẩu" />
+                    <label>
+                        <input type="text" name="username" value={form.username} onChange={inputChange} placeholder="Email / Số điện thoại" />
+                        {error.username && <p className="error-text">{error.username}</p>}
+                    </label>
+                    <label>
+                        <input type="password" name="password" value={form.password} onChange={inputChange} placeholder="Mật khẩu" />
+                        {error.password && <p className="error-text">{error.password}</p>}
+
+                    </label>
                     <div className="remember">
                         <label className="btn-remember">
                             <div>
@@ -44,7 +77,7 @@ export default React.forwardRef(function Login(prop, ref) {
                         </label>
                         <a href="#" className="forget">Quên mật khẩu?</a>
                     </div>
-                    <div className="btn rect main btn-login">đăng nhập</div>
+                    <div className="btn rect main btn-login" onClick={_login}>đăng nhập</div>
                     <div className="text-register" style={{}}>
                         <strong>hoặc đăng ký bằng</strong>
                     </div>

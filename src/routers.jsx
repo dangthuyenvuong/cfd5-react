@@ -10,6 +10,12 @@ import Profile from "./pages/Profile";
 import Project from "./pages/Project";
 import Team from "./pages/Team";
 import ThanhToan from "./pages/ThanhToan";
+import Register from "./pages/Register";
+import MyCourse from "./pages/Profile/components/MyCourse";
+import MyProject from "./pages/Profile/components/MyProject";
+import HistoryPayment from "./pages/Profile/components/HistoryPayment";
+import Coin from "./pages/Profile/components/Coin";
+import Info from "./pages/Profile/components/Info";
 
 
 const routers = [
@@ -23,7 +29,7 @@ const routers = [
         component: ABCLayout,
         routers: [
             {
-                path: '/abc/team',
+                path: '/team',
                 component: Team
             },
         ]
@@ -47,7 +53,31 @@ const routers = [
             },
             {
                 path: '/thong-tin-ca-nhan',
-                component: Profile
+                component: Profile,
+                auth: true,
+                routers: [
+                    {
+                        path: '/course',
+                        component: MyCourse,
+                    },
+                    {
+                        path: '/project',
+                        component: MyProject
+                    },
+                    {
+                        path: '/payment',
+                        component: HistoryPayment
+                    },
+                    {
+                        path: '/coin',
+                        component: Coin
+                    },
+                    {
+                        path: '/',
+                        component: Info,
+                        exact: true
+                    }
+                ]
             },
             {
                 path: '/project',
@@ -60,6 +90,10 @@ const routers = [
             {
                 path: '/course/:slug',
                 component: ChiTietKhoaHoc
+            },
+            {
+                path: '/register/:slug',
+                component: Register
             },
             {
                 path: '/',

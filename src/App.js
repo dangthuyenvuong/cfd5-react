@@ -6,21 +6,16 @@ import './assets/css/custom.css'
 
 import routers from './routers'
 import renderRouters from './core/routerConfig'
+import AppProvider from './core/AppProver'
 
 
-export let AContext = React.createContext()
 
 function App() {
-  let [login, setLogin] = useState(false)
-  function handleLogin() {
-    setLogin(true)
-  }
+
   return (
-    <AContext.Provider value={{ login, handleLogin }}>
-      <BrowserRouter>
-        {renderRouters(routers)}
-      </BrowserRouter>
-    </AContext.Provider>
+    <AppProvider>
+      {renderRouters(routers)}
+    </AppProvider>
   );
 
 }

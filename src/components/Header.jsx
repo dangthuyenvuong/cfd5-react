@@ -1,24 +1,15 @@
 import React, { useContext } from 'react'
 import { Link, NavLink, useHistory } from 'react-router-dom'
-import { AContext } from '../App'
+import useAppContext from '../core/useAppContext'
+import useAuth from '../core/useAuth';
+// import { AContext } from '../App'
+import useDelayLink from '../core/useDelayLink'
 export default function Header() {
-    let history = useHistory()
-    let { login, handleLogin } = useContext(AContext)
+    let { login, handleLogin, popupLogin, user, logout } = useAuth();
+    let delayLink = useDelayLink()
 
     function menuOpen() {
         document.body.classList.toggle('menu-is-show')
-    }
-
-    function closeMenu(e) {
-        document.body.classList.remove('menu-is-show')
-        document.querySelector('.loading-page').style.transform = 'scale(25)'
-        e.preventDefault()
-        setTimeout(() => {
-            console.log(e.target.href)
-            history.push(e.target.href.replace(window.location.origin, ''))
-            document.querySelector('.loading-page').style.transform = 'scale(0)'
-
-        }, 1000)
     }
 
 
@@ -46,7 +37,7 @@ export default function Header() {
                                 <div className="have-login">
                                     <div className="account">
                                         <a href="#" className="info">
-                                            <div className="name">Trần Lê Trọng Nghĩa</div>
+                                            <div className="name">{user.name}</div>
                                             <div className="avatar">
                                                 <img src="/img/avt.png" alt="" />
                                             </div>
@@ -57,12 +48,12 @@ export default function Header() {
                                     <div className="sub">
                                         <a href="#">Khóa học của tôi</a>
                                         <Link to="/thong-tin-ca-nhan">Thông tin tài khoản</Link>
-                                        <a href="#">Đăng xuất</a>
+                                        <a href="#" onClick={(e) => { e.preventDefault(); logout() }}>Đăng xuất</a>
                                     </div>
                                 </div>
                             ) : (
                                 <div class="not-login bg-none">
-                                    <a href="#" class="btn-register" onClick={handleLogin}>Đăng nhập</a>
+                                    <a href="#" class="btn-register" onClick={() => popupLogin()}>Đăng nhập</a>
                                     <a href="login.html" class="btn main btn-open-login">Đăng ký</a>
                                 </div>
                             )
@@ -81,19 +72,19 @@ export default function Header() {
                         <a href="#">Đăng ký</a>
                     </li>
                     <li >
-                        <NavLink exact onClick={closeMenu} to="/">Trang chủ</NavLink>
+                        <NavLink exact onClick={delayLink} to="/">Trang chủ</NavLink>
                     </li>
                     <li>
-                        <NavLink onClick={closeMenu} to="/team">CFD Team</NavLink>
+                        <NavLink onClick={delayLink} to="/team">CFD Team</NavLink>
                     </li>
                     <li>
-                        <NavLink onClick={closeMenu} to="/course">Khóa Học</NavLink>
+                        <NavLink onClick={delayLink} to="/course">Khóa Học</NavLink>
                     </li>
                     <li>
-                        <NavLink onClick={closeMenu} to="/project">Dự Án</NavLink>
+                        <NavLink onClick={delayLink} to="/project">Dự Án</NavLink>
                     </li>
                     <li>
-                        <NavLink onClick={closeMenu} to="/contact">Liên hệ</NavLink>
+                        <NavLink onClick={delayLink} to="/contact">Liên hệ</NavLink>
                     </li>
                 </ul>
             </nav>
