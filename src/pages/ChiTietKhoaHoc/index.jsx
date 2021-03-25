@@ -31,6 +31,10 @@ export default function ChiTietKhoaHoc() {
     //     })
     //   })
 
+    fetch('[url]', {
+      method: 'POST | PUT | DELETE'
+    })
+
     Promise.all([
       fetch(`http://cfd-reactjs.herokuapp.com/elearning/v4/course/${slug}`).then(res => res.json()),
       fetch(`http://cfd-reactjs.herokuapp.com/elearning/v4/course-related/${slug}`).then(res => res.json())

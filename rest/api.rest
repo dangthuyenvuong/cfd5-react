@@ -75,19 +75,6 @@ Authorization: Bearer {{TOKEN_DEMO}}
     "skype": "asdf"
 }
 
-###### Lấy dữ liệu cho trang home
-GET {{DOMAIN}}/elearning/v4/home
-
-
-
-######Lấy dữ liệu cho trang dang sách khóa học
-
-GET {{DOMAIN}}/elearning/v4/courses
-
-
-###### Lấy thông tin chi tiết 1 khóa học dựa theo slug
-GET {{DOMAIN}}/elearning/v4/course/cfd5-react-js
-
 
 #### Gửi yêu cầu đăng ký khóa học dựa theo slug của khóa học và accessToken của user đang đăng nhập
 POST {{DOMAIN}}/elearning/v4/course-register/cfd5-react-js
@@ -100,6 +87,23 @@ Authorization: Bearer {{TOKEN_DEMO}}
     "email": "vuong.dang@dna.vn",
     "fb": "abvc"
 }
+
+
+
+
+
+###################################
+
+###### Lấy dữ liệu cho trang home
+GET {{DOMAIN}}/elearning/v4/home
+
+######Lấy dữ liệu cho trang dang sách khóa học
+
+GET {{DOMAIN}}/elearning/v4/courses
+
+
+###### Lấy thông tin chi tiết 1 khóa học dựa theo slug
+GET {{DOMAIN}}/elearning/v4/course/cfd5-react-js
 
 #### Lấy danh sách khóa học liên quan
 GET {{DOMAIN}}/elearning/v4/course-related/cfd5-react-js

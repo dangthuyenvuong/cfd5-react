@@ -70,7 +70,6 @@ export default function useFormValidate(initialForm, validate) {
                 } catch (err) { }
             }
 
-
             if (r.min && form[i].length < r.min) {
                 errorObj[i] = m?.min || `Trường này không được ít hơn ${r.min} ký tự`
             }
