@@ -5,16 +5,40 @@ import Terminal from "./components/Terminal";
 import Gallery from "./components/Gallery";
 import Action from "./components/Action";
 import MainLayout from "../../layout/MainLayout";
+import { useEffect, useState } from "react";
+
+
 
 export default function Home() {
+    let [state, setState] = useState({
+        gallery: [],
+        offline: [],
+        online: [],
+        review: [],
+        loading: true
+    })
+
+    useEffect(() => {
+        fetch('http://cfd-reactjs.herokuapp.com/elearning/v4/home')
+            .then(res => res.json())
+            .then((res) => {
+                setState({
+                    ...res,
+                    loading: false
+                })
+            })
+    }, [])
+
+    if (state.loading) return 'Loading....'
+
     return (
-        <MainLayout>
+        <>
             <main className="homepage" id="main">
                 <Banner />
-                <CourseList />
+                <CourseList online={state.online} offline={state.offline} />
                 <Different />
-                <Terminal />
-                <Gallery />
+                <Terminal review={state.review} />
+                <Gallery images={state.gallery} />
                 <Action />
             </main>
 
@@ -40,6 +64,6 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-        </MainLayout>
+        </>
     )
 }

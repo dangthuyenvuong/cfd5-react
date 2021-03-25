@@ -4,6 +4,7 @@ import useAppContext from '../core/useAppContext'
 import useAuth from '../core/useAuth';
 // import { AContext } from '../App'
 import useDelayLink from '../core/useDelayLink'
+import Login from './Login';
 export default function Header() {
     let { login, handleLogin, popupLogin, user, logout } = useAuth();
     let delayLink = useDelayLink()

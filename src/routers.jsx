@@ -48,7 +48,7 @@ const routers = [
                 component: Contact
             },
             {
-                path: '/course',
+                path: '/courses',
                 component: KhoaHoc
             },
             {

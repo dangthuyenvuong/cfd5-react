@@ -1,12 +1,25 @@
-import React from 'react'
-
+import React, { useEffect, useRef } from 'react'
+// import $ from 'jquery';
+let $ = window.$
 export default function Gallery() {
+    let listRef = useRef()
+    useEffect(() => {
+        $(listRef.current).flickity({
+            contain: true,
+            wrapAround: false,
+            freeScroll: true,
+            cellAlign: 'left',
+            lazyLoad: 3,
+            imagesLoaded: true,
+            prevNextButtons: false
+        });
+    }, [])
     return (
         <section className="section-gallery">
             <div className="textbox">
                 <h2 className="main-title">Chúng ta là một team</h2>
             </div>
-            <div className="list">
+            <div className="list" ref={listRef}>
                 <img data-flickity-lazyload="img/img_team1.png" alt="" />
                 <img data-flickity-lazyload="img/img_team2.png" alt="" />
                 <img data-flickity-lazyload="img/img_team3.png" alt="" />

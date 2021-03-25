@@ -1,17 +1,66 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams, useRouteMatch } from 'react-router'
+import Course from '../../components/Course'
+import Accordion from './components/Accordion'
 
 export default function ChiTietKhoaHoc() {
 
   let { slug } = useParams()
+  let [state, setState] = useState({
+    course: null,
+    related: null,
+    currentContent: -1
+  })
+
+  useEffect(() => {
+    // fetch(`http://cfd-reactjs.herokuapp.com/elearning/v4/course/${slug}`)
+    //   .then(res => res.json())
+    //   .then(res => {
+    //     setState({
+    //       ...state,
+    //       course: res.data
+    //     })
+    //   })
+
+    // fetch(`http://cfd-reactjs.herokuapp.com/elearning/v4/course-related/${slug}`)
+    //   .then(res => res.json)
+    //   .then(res => {
+    //     setState({
+    //       ...state,
+    //       related: res.data
+    //     })
+    //   })
+
+    Promise.all([
+      fetch(`http://cfd-reactjs.herokuapp.com/elearning/v4/course/${slug}`).then(res => res.json()),
+      fetch(`http://cfd-reactjs.herokuapp.com/elearning/v4/course-related/${slug}`).then(res => res.json())
+    ])
+      .then(([res1, res2]) => {
+        setState({
+          ...state,
+          course: res1.data,
+          related: res2.data
+        })
+      })
+  }, [slug])
+
+  function handleAnccordion(i) {
+    setState({
+      ...state,
+      currentContent: i === state.currentContent ? -1 : i
+    })
+  }
+
+  let { course } = state;
+
+  if (!course) return 'Loading....'
 
   return (
     <main className="course-detail" id="main">
       <section className="banner style2" style={{ '--background': '#cde6fb' }}>
         <div className="container">
           <div className="info">
-            <h1>Thực Chiến
-              front-end căn bản</h1>
+            <h1>{course.title}</h1>
             <div className="row">
               <div className="date"><strong>Khai giảng:</strong> 12/10/2020</div>
               <div className="time"><strong>Thời lượng:</strong> 18 buổi</div>
@@ -40,66 +89,9 @@ export default function ChiTietKhoaHoc() {
             <img src="/img/course-detail-img.png" alt="" />
           </div>
           <h3 className="title">nội dung khóa học</h3>
-          <div className="accordion">
-            <div className="accordion__title">
-              <div className="date">Ngày 1</div>
-              <h3>Giới thiệu HTML, SEO, BEM.</h3>
-            </div>
-            <div className="content">
-              I'd like to demonstrate a powerful little pattern called “Server-Fetched Partials” that offers
-              some tangible benefits over alternatives like VueJS for simple page interactions.
-            </div>
-          </div>
-          <div className="accordion">
-            <div className="accordion__title">
-              <div className="date">Ngày 2</div>
-              <h3>CSS, CSS3, Flexbox, Grid</h3>
-            </div>
-            <div className="content">
-              I'd like to demonstrate a powerful little pattern called “Server-Fetched Partials” that offers
-              some tangible benefits over alternatives like VueJS for simple page interactions.
-            </div>
-          </div>
-          <div className="accordion">
-            <div className="accordion__title">
-              <div className="date">Ngày 3</div>
-              <h3>Media Queries</h3>
-            </div>
-            <div className="content">
-              I'd like to demonstrate a powerful little pattern called “Server-Fetched Partials” that offers
-              some tangible benefits over alternatives like VueJS for simple page interactions.
-            </div>
-          </div>
-          <div className="accordion">
-            <div className="accordion__title">
-              <div className="date">Ngày 4</div>
-              <h3>Boostrap 4</h3>
-            </div>
-            <div className="content">
-              I'd like to demonstrate a powerful little pattern called “Server-Fetched Partials” that offers
-              some tangible benefits over alternatives like VueJS for simple page interactions.
-            </div>
-          </div>
-          <div className="accordion">
-            <div className="accordion__title">
-              <div className="date">Ngày 5</div>
-              <h3>Thực hành dự án website Landing Page</h3>
-            </div>
-            <div className="content">
-              I'd like to demonstrate a powerful little pattern called “Server-Fetched Partials” that offers
-              some tangible benefits over alternatives like VueJS for simple page interactions.
-            </div>
-          </div>
-          <div className="accordion">
-            <div className="accordion__title">
-              <div className="date">Ngày 6</div>
-              <h3>Cài đặt Grunt và cấu trúc thư mục dự án</h3>
-            </div>
-            <div className="content">
-              I'd like to demonstrate a powerful little pattern called “Server-Fetched Partials” that offers
-              some tangible benefits over alternatives like VueJS for simple page interactions.
-            </div>
-          </div>
+          {
+            course.content.map((e, i) => <Accordion active={state.currentContent === i} handleAnccordion={handleAnccordion.bind(null, i)} key={i} {...e} num={i + 1} />)
+          }
           <h3 className="title">yêu cầu cần có</h3>
           <div className="row row-check">
             <div className="col-md-6">Đã từng học qua HTML, CSS</div>
@@ -246,78 +238,9 @@ export default function ChiTietKhoaHoc() {
             <h2 className="main-title">Liên quan</h2>
           </div>
           <div className="list row">
-            <div className="col-md-4 course">
-              <div className="wrap">
-                <a href="#" className="cover">
-                  <img src="/img/img.png" alt="" />
-                </a>
-                <div className="info">
-                  <a className="name" href="#">
-                    Front-end căn bản
-                  </a>
-                  <p className="des">
-                    One of the best corporate fashion brands in Sydney
-                  </p>
-                </div>
-                <div className="bottom">
-                  <div className="teacher">
-                    <div className="avatar">
-                      <img src="/img/avt.png" alt="" />
-                    </div>
-                    <div className="name">Vương Đặng</div>
-                  </div>
-                  <div className="register-btn">Đăng Ký</div>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-4 course">
-              <div className="wrap">
-                <a href="#" className="cover">
-                  <img src="/img/img2.png" alt="" />
-                </a>
-                <div className="info">
-                  <a className="name" href="#">
-                    Front-end nâng cao
-                  </a>
-                  <p className="des">
-                    One of the best corporate fashion brands in Sydney
-                  </p>
-                </div>
-                <div className="bottom">
-                  <div className="teacher">
-                    <div className="avatar">
-                      <img src="/img/avt.png" alt="" />
-                    </div>
-                    <div className="name">Trần Nghĩa</div>
-                  </div>
-                  <div className="register-btn">Đăng Ký</div>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-4 course">
-              <div className="wrap">
-                <a href="#" className="cover">
-                  <img src="/img/img3.png" alt="" />
-                </a>
-                <div className="info">
-                  <a className="name" href="#">
-                    Laravel framework
-                  </a>
-                  <p className="des">
-                    One of the best corporate fashion brands in Sydney
-                  </p>
-                </div>
-                <div className="bottom">
-                  <div className="teacher">
-                    <div className="avatar">
-                      <img src="/img/avt.png" alt="" />
-                    </div>
-                    <div className="name">Trần Nghĩa</div>
-                  </div>
-                  <div className="register-btn">Đăng Ký</div>
-                </div>
-              </div>
-            </div>
+            {
+              state.related.map(e => <Course key={e._id} {...e} />)
+            }
           </div>
         </div>
       </section>

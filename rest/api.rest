@@ -1,0 +1,105 @@
+# Token dùng để test
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmNmM2M1NTI1Mjk0MTI4NTAzOGUwY2EiLCJlbWFpbCI6InRhaWh0MjIxQGdtYWlsLmNvbSIsInJ1bGUiOltdLCJleHBpcmVkX2F0IjoxNjQyNjc1ODU1NDE5LCJleHBpcmVkX2luIjozMTUzNjAwMDAwMCwiaWF0IjoxNjExMTM5ODU1LCJleHAiOjE2NDI2NzU4NTV9.ihhhAgpmZbS8F1D08pDYj68uSmVjgujIvNhRHvGiFjA
+# @DOMAIN = http://cfd-reactjs.herokuapp.com
+@DOMAIN = http://cfd-reactjs.herokuapp.com
+
+# Token dùng để test khác
+@TOKEN_DEMO = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDA4MzExNDVlZjMwNzI3MzI3YTk0NjEiLCJlbWFpbCI6ImFiY0BnbWFpbC5jb20iLCJydWxlIjpbXSwiZXhwaXJlZF9hdCI6MTY0Mjg1OTI1MjE4OSwiZXhwaXJlZF9pbiI6MzE1MzYwMDAwMDAsImlhdCI6MTYxMTMyMzI1MiwiZXhwIjoxNjQyODU5MjUyfQ.UDet8ifrAfBrMOV2nFqPfmbifyL5OgXzuQBz4UjpDlI
+
+# Đăng nhập
+POST {{DOMAIN}}/elearning/v4/login
+Content-Type: application/json
+
+{
+    "username": "taiht221@gmail.com",
+    "password": "qưeqwe"
+}
+
+#### Đăng ký
+
+POST {{DOMAIN}}/elearning/v4/register
+Content-Type: application/json
+
+{
+    "email": "demo@gmail.com",
+    "name": "Dang Thuyen Vuong",
+    "password": "qweqwe"
+}
+
+#### Gửi liên hệ
+POST {{DOMAIN}}/elearning/v4/contact
+Content-Type: application/json
+
+{
+    "name": "asdfasdfsdf",
+    "phone": "424234434",
+    "email": "dangthuyen@gmail.com"
+}
+
+
+#### Lấy thông tin tài khoản dựa theo accessToken
+POST {{DOMAIN}}/elearning/v4/profile
+Content-Type: application/json
+Authorization: Bearer {{TOKEN_DEMO}}
+
+
+#### Lấy thông tin khóa học của user dựa theo accessToken
+POST {{DOMAIN}}/elearning/v4/profile/course
+Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
+
+
+#### Lấy thông tin payment của user dựa theo accessToken
+
+POST {{DOMAIN}}/elearning/v4/profile/payment
+Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
+
+
+### Lấy thông tin sử dụng coin của user dựa theo accessToken
+
+POST {{DOMAIN}}/elearning/v4/profile/coint
+Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
+
+
+####
+POST {{DOMAIN}}/elearning/v4/profile/update
+Content-Type: application/json
+Authorization: Bearer {{TOKEN_DEMO}}
+
+{
+    "name": "ABC",
+    "phone": "23423847",
+    "fb": "abvc",
+    "skype": "asdf"
+}
+
+###### Lấy dữ liệu cho trang home
+GET {{DOMAIN}}/elearning/v4/home
+
+
+
+######Lấy dữ liệu cho trang dang sách khóa học
+
+GET {{DOMAIN}}/elearning/v4/courses
+
+
+###### Lấy thông tin chi tiết 1 khóa học dựa theo slug
+GET {{DOMAIN}}/elearning/v4/course/cfd5-react-js
+
+
+#### Gửi yêu cầu đăng ký khóa học dựa theo slug của khóa học và accessToken của user đang đăng nhập
+POST {{DOMAIN}}/elearning/v4/course-register/cfd5-react-js
+Content-Type: application/json
+Authorization: Bearer {{TOKEN_DEMO}}
+
+{
+    "name": "ABC",
+    "phone": "23423847",
+    "email": "vuong.dang@dna.vn",
+    "fb": "abvc"
+}
+
+#### Lấy danh sách khóa học liên quan
+GET {{DOMAIN}}/elearning/v4/course-related/cfd5-react-js

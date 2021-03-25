@@ -1,17 +1,18 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
-export default function Course({ name, image, des, status, teacher_name, teacher_img, slug }) {
+export default function Course({ title, thumbnail, short_description, course_status, teacher, slug }) {
 
 
     return (
         <div className="col-md-4 course">
             <div className="wrap">
-                <a className="cover" href="#">
-                    <img src={image} alt="" />
+                <Link className="cover" to={`/course/${slug}`}>
+                    <img src={thumbnail.link} alt="" />
                     {
-                        status === 'dang-dien-ra' ? <span className="badge b2">Đang diễn ra</span>
+                        course_status === 'dang-dien-ra' ? <span className="badge b2">Đang diễn ra</span>
                             : (
-                                status === 'da-ket-thuc' ? <span className="badge b1">Da ket thuc</span>
+                                course_status === 'da-ket-thuc' ? <span className="badge b1">Da ket thuc</span>
                                     : <span className="badge b3">Sap khap giang</span>
                             )
                     }
@@ -29,23 +30,23 @@ export default function Course({ name, image, des, status, teacher_name, teacher
                             <img src="/img/icon-viewmore.svg" alt="" />
                         </div>
                     </div>
-                </a>
+                </Link>
                 <div className="info">
-                    <a className="name" href="#">
-                        {name}
-                    </a>
+                    <Link className="name" to={`/course/${slug}`}>
+                        {title}
+                    </Link>
                     <p className="des">
-                        {des}
+                        {short_description}
                     </p>
                 </div>
                 <div className="bottom">
                     <div className="teacher">
                         <div className="avatar">
-                            <img src={teacher_img} alt="" />
+                            <img src={teacher.avatar.link} alt="" />
                         </div>
-                        <div className="name">{teacher_name}</div>
+                        <div className="name">{teacher.title}</div>
                     </div>
-                    <div className="register-btn">Đăng Ký</div>
+                    <Link to={`/register/${slug}`} className="register-btn">Đăng Ký</Link>
                 </div>
             </div>
         </div>
