@@ -47,7 +47,7 @@ export default function Header() {
                                     <div className="hamberger" >
                                     </div>
                                     <div className="sub">
-                                        <a href="#">Khóa học của tôi</a>
+                                        <Link to="/thong-tin-ca-nhan/course">Khóa học của tôi</Link>
                                         <Link to="/thong-tin-ca-nhan">Thông tin tài khoản</Link>
                                         <a href="#" onClick={(e) => { e.preventDefault(); logout() }}>Đăng xuất</a>
                                     </div>
@@ -79,7 +79,7 @@ export default function Header() {
                         <NavLink onClick={delayLink} to="/team">CFD Team</NavLink>
                     </li>
                     <li>
-                        <NavLink onClick={delayLink} to="/course">Khóa Học</NavLink>
+                        <NavLink onClick={delayLink} to="/courses">Khóa Học</NavLink>
                     </li>
                     <li>
                         <NavLink onClick={delayLink} to="/project">Dự Án</NavLink>

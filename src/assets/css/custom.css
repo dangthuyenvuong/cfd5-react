@@ -7,13 +7,13 @@
 }
 
 .error-text {
-    position: absolute;
+    /* position: absolute; */
     left: 231px;
     width: 100% !important;
     bottom: -19px;
     font-size: 13px;
     color: #c00000;
-    font-weight: 100;
+    font-weight: 500;
 }
 
 .nav ul li.active {
@@ -40,4 +40,8 @@
 
 label {
     position: relative;
+}
+
+label .error-text {
+    position: absolute;
 }

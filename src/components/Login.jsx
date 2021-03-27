@@ -4,6 +4,7 @@ import useAuth from '../core/useAuth'
 import useFormValidate from '../core/useFormValidate'
 
 export default React.forwardRef(function Login(prop, ref) {
+    let [formError, setFormError] = useState()
     let { form, inputChange, error, check } = useFormValidate({
         username: '',
         password: ''
@@ -17,7 +18,7 @@ export default React.forwardRef(function Login(prop, ref) {
                 required: true,
                 min: 6,
                 max: 32,
-                pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]*$/
+                // pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]*$/
             }
         },
         message: {
@@ -45,11 +46,15 @@ export default React.forwardRef(function Login(prop, ref) {
 
     }
 
-    function _login() {
+    async function _login() {
         let error = check()
         if (Object.keys(error).length === 0) {
-            handleLogin(form)
-            close()
+            let res = await handleLogin(form)
+            if (res?.error) {
+                setFormError(res.error)
+            } else {
+                close()
+            }
         }
     }
 
@@ -59,6 +64,9 @@ export default React.forwardRef(function Login(prop, ref) {
                 {/* login-form */}
                 <div className="ct_login" style={{ display: 'block' }}>
                     <h2 className="title">Đăng nhập</h2>
+                    {
+                        formError && <p className="error-text" style={{ textAlign: 'center', marginBottom: 20 }}>{formError}</p>
+                    }
                     <label>
                         <input type="text" name="username" value={form.username} onChange={inputChange} placeholder="Email / Số điện thoại" />
                         {error.username && <p className="error-text">{error.username}</p>}

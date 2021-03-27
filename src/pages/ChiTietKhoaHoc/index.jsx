@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useRouteMatch } from 'react-router'
+import courseApi from '../../api/courseApi'
 import Course from '../../components/Course'
 import Accordion from './components/Accordion'
 
@@ -31,13 +32,11 @@ export default function ChiTietKhoaHoc() {
     //     })
     //   })
 
-    fetch('[url]', {
-      method: 'POST | PUT | DELETE'
-    })
+
 
     Promise.all([
-      fetch(`http://cfd-reactjs.herokuapp.com/elearning/v4/course/${slug}`).then(res => res.json()),
-      fetch(`http://cfd-reactjs.herokuapp.com/elearning/v4/course-related/${slug}`).then(res => res.json())
+      courseApi.detail(slug),
+      courseApi.related(slug)
     ])
       .then(([res1, res2]) => {
         setState({

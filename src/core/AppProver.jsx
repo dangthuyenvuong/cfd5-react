@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, useHistory } from "react-router-dom";
+import userApi from "../api/userApi";
 export let Context = React.createContext()
 
 function App({ children }) {
@@ -8,15 +9,34 @@ function App({ children }) {
         user: null
     })
     useEffect(() => {
-        localStorage.setItem('auth', JSON.stringify(auth))
+
+        if (auth.login) {
+            localStorage.setItem('auth', JSON.stringify(auth))
+            if (auth.user.token) {
+                localStorage.setItem('token', JSON.stringify(auth.user.token))
+            }
+        } else {
+            localStorage.removeItem('auth')
+            localStorage.removeItem('token')
+        }
     }, [auth])
 
-    function handleLogin(form) {
+    async function handleLogin(form) {
+        let res = await userApi.login(form)
+        if (res.error) {
+            return res
+        } else {
+            setAuth({
+                login: true,
+                user: res.data
+            })
+        }
+    }
+
+    function updateInfo(data) {
         setAuth({
-            login: true,
-            user: {
-                name: 'Đặng Thuyền Vương'
-            }
+            ...auth,
+            user: data
         })
     }
 
@@ -43,7 +63,7 @@ function App({ children }) {
         }, 1000)
     }
 
-    return <Context.Provider value={{ auth, handleLogin, delayLink, popupLogin, logout }}>
+    return <Context.Provider value={{ auth, handleLogin, delayLink, popupLogin, logout, updateInfo }}>
         {children}
     </Context.Provider>
 }

@@ -1,14 +1,26 @@
-import React, { useReducer, useState } from 'react'
+import React, { useEffect, useReducer, useState } from 'react'
+import { useHistory, useParams } from 'react-router'
+import courseApi from '../../api/courseApi'
 import useFormValidate from '../../core/useFormValidate'
 import reducer from './reducer'
 
 export default function Register() {
+    let { slug } = useParams()
+    let history = useHistory()
+    let [course, setCourse] = useState()
+    useEffect(async () => {
+        let res = await courseApi.detail(slug)
+        if (res.data) {
+            setCourse(res.data)
+        }
+    }, [slug])
+
 
     let { form, error, inputChange, check } = useFormValidate({
         name: '',
         phone: '',
         email: '',
-        website: '',
+        fb: '',
         title: '',
         content: '',
         coin: false,
@@ -29,7 +41,7 @@ export default function Register() {
                 required: true,
                 pattern: 'email'
             },
-            website: {
+            fb: {
                 required: true,
                 pattern: /^(?:http(s)?:\/\/)?www.facebook.com\/[\w.-]+$/i
             }
@@ -48,12 +60,15 @@ export default function Register() {
 
 
 
-    function btnRegister() {
+    async function btnRegister() {
 
         let error = check()
 
         if (Object.keys(error).length === 0) {
-            alert('Thanh cong')
+            let res = await courseApi.register(form, slug)
+            if (res.success) {
+                history.push(`/course/${slug}`)
+            }
         }
 
     }
@@ -68,13 +83,15 @@ export default function Register() {
         // })
     }
 
+    if (!course) return 'Loading....'
+
     return (
         <main className="register-course" id="main">
             <section>
                 <div className="container">
                     <div className="wrap container">
                         <div className="main-sub-title">ĐĂNG KÝ</div>
-                        <h1 className="main-title">Thực chiến front-end căn bản </h1>
+                        <h1 className="main-title">{course.title}</h1>
                         <div className="main-info">
                             <div className="date"><strong>Khai giảng:</strong> 15/11/2020</div>
                             <div className="time"><strong>Thời lượng:</strong> 18 buổi</div>
@@ -100,8 +117,8 @@ export default function Register() {
                             </label>
                             <label>
                                 <p>Facebook</p>
-                                <input value={form.website} onChange={inputChange} type="text" name="website" placeholder="Đường dẫn website http://" />
-                                {error.website && <p className="error-text">{error.website}</p>}
+                                <input value={form.fb} onChange={inputChange} type="text" name="fb" placeholder="Đường dẫn FB http://" />
+                                {error.fb && <p className="error-text">{error.fb}</p>}
 
                             </label>
                             <label className="disable">

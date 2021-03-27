@@ -6,27 +6,31 @@ import Gallery from "./components/Gallery";
 import Action from "./components/Action";
 import MainLayout from "../../layout/MainLayout";
 import { useEffect, useState } from "react";
+import courseApi from "../../api/courseApi";
+import useStateSession from "../../core/useStateSession";
 
 
 
 export default function Home() {
-    let [state, setState] = useState({
+    let [state, setState] = useStateSession({
         gallery: [],
         offline: [],
         online: [],
         review: [],
+        api: true,
         loading: true
-    })
+    }, 'home')
 
-    useEffect(() => {
-        fetch('http://cfd-reactjs.herokuapp.com/elearning/v4/home')
-            .then(res => res.json())
-            .then((res) => {
-                setState({
-                    ...res,
-                    loading: false
-                })
+    useEffect(async () => {
+        if (state.api) {
+            let res = await courseApi.home()
+            setState({
+                ...res,
+                loading: false,
+                api: false
             })
+        }
+
     }, [])
 
     if (state.loading) return 'Loading....'

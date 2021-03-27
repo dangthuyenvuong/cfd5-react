@@ -1,16 +1,17 @@
 import React from 'react'
 import { Prompt } from 'react-router'
+import userApi from '../../../api/userApi'
 import useAuth from '../../../core/useAuth'
 import useFormValidate from '../../../core/useFormValidate'
 import useStateLocal from '../../../core/useStateLocal'
 
 export default function Info() {
-    let { user } = useAuth()
+    let { user, updateInfo } = useAuth()
     let { form, error, inputChange, check } = useFormValidate({
         name: user.name,
-        phone: '',
-        fb: '',
-        skype: '',
+        phone: user.phone,
+        fb: user.fb,
+        skype: user.skype,
     }, {
         rule: {
             name: {
@@ -36,12 +37,15 @@ export default function Info() {
 
 
 
-    function _save() {
+    async function _save() {
 
         let error = check()
 
         if (Object.keys(error).length === 0) {
-            alert('Thanh cong')
+            let res = await userApi.updateInfo(form)
+            if (res.data) {
+                updateInfo(res.data)
+            }
         }
 
     }
@@ -64,7 +68,7 @@ export default function Info() {
                 </label>
                 <label>
                     <p>Email<span>*</span></p>
-                    <input defaultValue="vuong.dang@dna.vn" disabled type="text" />
+                    <input defaultValue={user.email} disabled type="text" />
                 </label>
 
                 <label>
