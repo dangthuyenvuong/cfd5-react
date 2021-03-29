@@ -21,7 +21,7 @@ POST {{DOMAIN}}/elearning/v4/register
 Content-Type: application/json
 
 {
-    "email": "demo@gmail.com",
+    "email": "demo2@gmail.com",
     "name": "Dang Thuyen Vuong",
     "password": "qweqwe"
 }
@@ -44,21 +44,21 @@ Authorization: Bearer {{TOKEN_DEMO}}
 
 
 #### Lấy thông tin khóa học của user dựa theo accessToken
-POST {{DOMAIN}}/elearning/v4/profile/course
+GET {{DOMAIN}}/elearning/v4/profile/course
 Content-Type: application/json
 Authorization: Bearer {{TOKEN}}
 
 
 #### Lấy thông tin payment của user dựa theo accessToken
 
-POST {{DOMAIN}}/elearning/v4/profile/payment
+GET {{DOMAIN}}/elearning/v4/profile/payment
 Content-Type: application/json
 Authorization: Bearer {{TOKEN}}
 
 
 ### Lấy thông tin sử dụng coin của user dựa theo accessToken
 
-POST {{DOMAIN}}/elearning/v4/profile/coint
+GET {{DOMAIN}}/elearning/v4/profile/coint
 Content-Type: application/json
 Authorization: Bearer {{TOKEN}}
 

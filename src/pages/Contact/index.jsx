@@ -1,6 +1,24 @@
-import React, { useRef, useState } from 'react'
-
+import React from 'react'
+import useFormValidate from '../../core/useFormValidate';
+import pageApi from '../../api/pageApi'
 export default React.forwardRef(function Contact(props, ref) {
+
+    let { form, inputChange, error, check } = useFormValidate({
+        name: '',
+        phone: '',
+        email: '',
+        website: '',
+        title: '',
+        content: '',
+    }, {
+        rule: {
+            name: { required: true },
+            phone: { required: true, pattern: 'phone' },
+            email: { required: true, pattern: 'email' },
+            title: { required: true },
+            content: { required: true },
+        }
+    })
 
     // let [name, setName] = useState('')
     // let [nameError, setNameError] = useState('')
@@ -11,91 +29,65 @@ export default React.forwardRef(function Contact(props, ref) {
     // let [content, setContent] = useState('')
 
 
-    let [form, setForm] = useState({
-        name: '',
-        phone: '',
-        email: '',
-        website: '',
-        title: '',
-        content: ''
-    })
+    // let [form, setForm] = useState({
+    //     name: '',
+    //     phone: '',
+    //     email: '',
+    //     website: '',
+    //     title: '',
+    //     content: ''
+    // })
 
-    let [error, setError] = useState({
-        name: '',
-        phone: '',
-        email: '',
-        website: '',
-        title: '',
-        content: ''
-    })
+    // let [error, setError] = useState({
+    //     name: '',
+    //     phone: '',
+    //     email: '',
+    //     website: '',
+    //     title: '',
+    //     content: ''
+    // })
 
-    let inputRef = useRef()
+    // let inputRef = useRef()
 
-    function _btnFocus() {
-        inputRef.current.value = 'aaaaaaa'
-    }
-    function inputChange(e) {
-        let name = e.target.name
-        let value = e.target.value
+    // function _btnFocus() {
+    //     inputRef.current.value = 'aaaaaaa'
+    // }
+    // function inputChange(e) {
+    //     let name = e.target.name
+    //     let value = e.target.value
 
-        if (name === 'phone') {
-            if (!(value.length >= 9 && value.length <= 11)) {
+    //     if (name === 'phone') {
+    //         if (!(value.length >= 9 && value.length <= 11)) {
 
-                setError({
-                    ...error,
-                    phone: 'So dien thoai phai >= 9, <= 11'
-                })
-            } else {
-                setError({
-                    ...error,
-                    phone: ''
-                })
+    //             setError({
+    //                 ...error,
+    //                 phone: 'So dien thoai phai >= 9, <= 11'
+    //             })
+    //         } else {
+    //             setError({
+    //                 ...error,
+    //                 phone: ''
+    //             })
+    //         }
+    //     }
+
+
+    //     setForm({
+    //         ...form,
+    //         [e.target.name]: e.target.value
+    //     })
+    // }
+
+    async function btnRegister() {
+
+        let error = check();
+        if (Object.keys(error).length === 0) {
+            let res = await pageApi.contact(form)
+            if (res?.success) {
+                alert('Bạn đã gửi liên hệ thành công, chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất!');
             }
+
         }
-
-
-        setForm({
-            ...form,
-            [e.target.name]: e.target.value
-        })
-    }
-
-    function btnRegister() {
-
-        let errorObj = {}
-        if (!form.name) {
-            errorObj.name = 'Ho va ten khong duoc de trong'
-        }
-
-        if (!form.email) {
-            errorObj.email = 'Email khong duoc de trong'
-        } else if (!/^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/i.test(form.email)) {
-            errorObj.email = 'khong dung dinh dang Email'
-        }
-
-        if (!form.phone) {
-            errorObj.phone = 'SO dien thoai khong duoc de trong'
-        }
-
-        if (!form.title) {
-            errorObj.title = 'Tieu de khong duoc de trong'
-        }
-
-        if (form.website && !/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/i.test(form.website)) {
-            errorObj.website = 'Website khong dung dinh dang url'
-        }
-
-        if (form.content === '') {
-            errorObj.content = 'Noi dung khong duoc de trong'
-        }
-
-        setError(errorObj)
-
-
-        if (Object.keys(errorObj).length === 0) {
-            alert('Thanh cong')
-        }
-
     }
 
     return (

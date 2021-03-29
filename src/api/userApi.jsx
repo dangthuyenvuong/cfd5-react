@@ -23,7 +23,6 @@ export default {
         let token = JSON.parse(localStorage.getItem('token'))
 
         return fetch('http://cfd-reactjs.herokuapp.com/elearning/v4/profile/course', {
-            method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token.accessToken}`
             }
