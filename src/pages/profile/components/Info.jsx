@@ -1,12 +1,13 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { Prompt } from 'react-router'
 import userApi from '../../../api/userApi'
-import useAuth from '../../../core/useAuth'
+// import useAuth from '../../../core/useAuth'
 import useFormValidate from '../../../core/useFormValidate'
 import useStateLocal from '../../../core/useStateLocal'
 
 export default function Info() {
-    let { user, updateInfo } = useAuth()
+    let { user } = useSelector(state => state.auth)
     let { form, error, inputChange, check } = useFormValidate({
         name: user.name,
         phone: user.phone,
@@ -44,7 +45,7 @@ export default function Info() {
         if (Object.keys(error).length === 0) {
             let res = await userApi.updateInfo(form)
             if (res.data) {
-                updateInfo(res.data)
+                // updateInfo(res.data)
             }
         }
 

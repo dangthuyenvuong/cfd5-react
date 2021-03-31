@@ -1,20 +1,21 @@
-import React, { useContext } from 'react'
-import { Link, NavLink, useHistory } from 'react-router-dom'
-import useAppContext from '../core/useAppContext'
-import useAuth from '../core/useAuth';
-// import { AContext } from '../App'
+import React from 'react'
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { Link, NavLink, } from 'react-router-dom'
 import useDelayLink from '../core/useDelayLink'
-import Login from './Login';
+import { logout, popupLogin } from '../redux/actions/authAction';
 export default function Header() {
-    let { login, handleLogin, popupLogin, user, logout } = useAuth();
+
+
+    let dispatch = useDispatch()
+    let { user, login } = useSelector(state => state.auth)
+
+
     let delayLink = useDelayLink()
 
     function menuOpen() {
         document.body.classList.toggle('menu-is-show')
     }
-
-
-
 
     return (
         <>
@@ -49,12 +50,12 @@ export default function Header() {
                                     <div className="sub">
                                         <Link to="/thong-tin-ca-nhan/course">Khóa học của tôi</Link>
                                         <Link to="/thong-tin-ca-nhan">Thông tin tài khoản</Link>
-                                        <a href="#" onClick={(e) => { e.preventDefault(); logout() }}>Đăng xuất</a>
+                                        <a href="#" onClick={(e) => { e.preventDefault(); dispatch(logout()) }}>Đăng xuất</a>
                                     </div>
                                 </div>
                             ) : (
                                 <div class="not-login bg-none">
-                                    <a href="#" class="btn-register" onClick={() => popupLogin()}>Đăng nhập</a>
+                                    <a href="#" class="btn-register" onClick={() => dispatch(popupLogin(true))}>Đăng nhập</a>
                                     <a href="login.html" class="btn main btn-open-login">Đăng ký</a>
                                 </div>
                             )

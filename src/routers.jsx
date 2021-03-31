@@ -16,6 +16,7 @@ import MyProject from "./pages/Profile/components/MyProject";
 import HistoryPayment from "./pages/Profile/components/HistoryPayment";
 import Coin from "./pages/Profile/components/Coin";
 import Info from "./pages/Profile/components/Info";
+import CountPage from "./pages/CountPage";
 
 
 const routers = [
@@ -94,6 +95,11 @@ const routers = [
             {
                 path: '/register/:slug',
                 component: Register
+            },
+            {
+                path: '/count',
+                component: CountPage,
+                exact: true
             },
             {
                 path: '/',

@@ -6,12 +6,13 @@ import Info from './components/Info'
 import MyProject from './components/MyProject'
 import { Redirect, Route, Switch, useRouteMatch, Prompt } from 'react-router'
 import { NavLink } from 'react-router-dom'
-import useAuth from '../../core/useAuth'
+import { useSelector } from 'react-redux'
+// import useAuth from '../../core/useAuth'
 export default function Profile({ children }) {
     let { url } = useRouteMatch()
 
 
-    let { user } = useAuth()
+    let { user } = useSelector(state => state.auth)
 
     return (
         <>

@@ -1,10 +1,15 @@
 import React, { useImperativeHandle, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
-import useAuth from '../core/useAuth'
+import { useDispatch, useSelector } from 'react-redux'
+import userApi from '../api/userApi'
+// import useAuth from '../core/useAuth'
 import useFormValidate from '../core/useFormValidate'
+import { fetchLogin, login, popupLogin } from '../redux/actions/authAction'
 
 export default React.forwardRef(function Login(prop, ref) {
-    let [formError, setFormError] = useState()
+    const dispatch = useDispatch()
+    let { popupOpen, loginError } = useSelector(state => state.auth)
+    // let [formError, setFormError] = useState()
     let { form, inputChange, error, check } = useFormValidate({
         username: '',
         password: ''
@@ -28,44 +33,22 @@ export default React.forwardRef(function Login(prop, ref) {
         }
     })
     let divRef = useRef()
-    let { handleLogin } = useAuth()
-
-    useImperativeHandle(ref, () => {
-        return {
-            open,
-            close
-        }
-    }, [])
-
-    function open() {
-        divRef.current.style.display = 'flex'
-    }
-
-    function close() {
-        divRef.current.style.display = 'none'
-
-    }
 
     async function _login() {
         let error = check()
         if (Object.keys(error).length === 0) {
-            let res = await handleLogin(form)
-            if (res?.error) {
-                setFormError(res.error)
-            } else {
-                close()
-            }
+            dispatch(fetchLogin(form))
         }
     }
 
     return ReactDOM.createPortal(
-        <div className="popup-form popup-login" id="popupLogin" ref={divRef} style={{ display: 'none' }}>
+        <div className="popup-form popup-login" id="popupLogin" ref={divRef} style={{ display: popupOpen ? 'flex' : 'none' }}>
             <div className="wrap">
                 {/* login-form */}
                 <div className="ct_login" style={{ display: 'block' }}>
                     <h2 className="title">Đăng nhập</h2>
                     {
-                        formError && <p className="error-text" style={{ textAlign: 'center', marginBottom: 20 }}>{formError}</p>
+                        loginError && <p className="error-text" style={{ textAlign: 'center', marginBottom: 20 }}>{loginError}</p>
                     }
                     <label>
                         <input type="text" name="username" value={form.username} onChange={inputChange} placeholder="Email / Số điện thoại" />
@@ -105,12 +88,12 @@ export default React.forwardRef(function Login(prop, ref) {
                     <input type="text" placeholder="Email" />
                     <div className="btn rect main btn-next">Tiếp theo</div>
                     <div className="back" />
-                    <div className="close" onClick={close}>
+                    <div className="close" onClick={() => dispatch(popupLogin(false))}>
                         <img src="/img/close-icon.png" alt="" />
                     </div>
                 </div>
             </div>
-        </div>,
+        </div >,
         document.getElementById('root2')
     )
 }

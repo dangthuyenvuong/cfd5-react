@@ -1,55 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { Provider } from 'react-redux'
 import { BrowserRouter, useHistory } from "react-router-dom";
-import userApi from "../api/userApi";
-export let Context = React.createContext()
+import { createStore } from "redux";
+export const Context = React.createContext()
+function App({ children, store }) {
 
-function App({ children }) {
-    let [auth, setAuth] = useState(JSON.parse(localStorage.getItem('auth')) || {
-        login: false,
-        user: null
-    })
-    useEffect(() => {
-
-        if (auth.login) {
-            localStorage.setItem('auth', JSON.stringify(auth))
-            if (auth.user.token) {
-                localStorage.setItem('token', JSON.stringify(auth.user.token))
-            }
-        } else {
-            localStorage.removeItem('auth')
-            localStorage.removeItem('token')
-        }
-    }, [auth])
-
-    async function handleLogin(form) {
-        let res = await userApi.login(form)
-        if (res.error) {
-            return res
-        } else {
-            setAuth({
-                login: true,
-                user: res.data
-            })
-        }
-    }
-
-    function updateInfo(data) {
-        setAuth({
-            ...auth,
-            user: data
-        })
-    }
-
-    function logout() {
-        setAuth({
-            login: false,
-            user: null
-        })
-    }
-
-    function popupLogin(flag = true) {
-        document.getElementById('popupLogin').style.display = flag ? 'flex' : 'none'
-    }
 
     let history = useHistory()
 
@@ -63,14 +18,21 @@ function App({ children }) {
         }, 1000)
     }
 
-    return <Context.Provider value={{ auth, handleLogin, delayLink, popupLogin, logout, updateInfo }}>
-        {children}
-    </Context.Provider>
+    if (!store) {
+        store = createStore(() => { });
+    }
+
+
+    return <Provider store={store}>
+        <Context.Provider value={{ delayLink }}>
+            {children}
+        </Context.Provider>
+    </Provider>
 }
 
-const AppProvider = ({ children }) => {
+const AppProvider = ({ children, store }) => {
     return <BrowserRouter>
-        <App>{children}</App>
+        <App store={store}>{children}</App>
     </BrowserRouter>
 }
 
