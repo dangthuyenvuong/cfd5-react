@@ -1,9 +1,26 @@
 import React from "react";
 import { Provider } from 'react-redux'
 import { BrowserRouter, useHistory } from "react-router-dom";
-import { createStore } from "redux";
+import { applyMiddleware, compose, createStore } from "redux";
+import createSagaMiddleware from 'redux-saga'
 export const Context = React.createContext()
-function App({ children, store }) {
+
+
+let thunkFake = ({ dispatch, getState }) => next => action => {
+    if (typeof action === 'function') {
+        return action(dispatch, getState);
+    }
+
+    next(action)
+}
+const composeEnhancers = typeof window === 'object' && window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] ? window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__']({}) : compose
+
+const sagaMiddleware = createSagaMiddleware();
+
+
+let store
+
+function App({ children, reducers, saga }) {
 
 
     let history = useHistory()
@@ -19,7 +36,9 @@ function App({ children, store }) {
     }
 
     if (!store) {
-        store = createStore(() => { });
+        if (!reducers) reducers = () => { }
+        store = createStore(reducers, composeEnhancers(applyMiddleware(sagaMiddleware, thunkFake)))
+        sagaMiddleware.run(saga)
     }
 
 
@@ -30,9 +49,9 @@ function App({ children, store }) {
     </Provider>
 }
 
-const AppProvider = ({ children, store }) => {
+const AppProvider = ({ children, reducers, saga }) => {
     return <BrowserRouter>
-        <App store={store}>{children}</App>
+        <App reducers={reducers} saga={saga}>{children}</App>
     </BrowserRouter>
 }
 

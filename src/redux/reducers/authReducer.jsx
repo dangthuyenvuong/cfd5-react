@@ -16,22 +16,12 @@ export default function authReducer(state = initialState, action) {
             }
         case AUTH_LOGIN:
 
-            localStorage.setItem('auth', JSON.stringify({
-                login: true,
-                user: action.payload
-            }))
-            if (action.payload.token) {
-                localStorage.setItem('token', JSON.stringify(action.payload.token))
-            }
-
             return {
                 ...state,
                 login: true,
                 user: action.payload
             }
         case AUTH_LOGOUT:
-            localStorage.removeItem('auth')
-            localStorage.removeItem('token')
             return {
                 ...state,
                 login: false,

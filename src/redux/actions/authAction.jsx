@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import userApi from "../../api/userApi";
-import { AUTH_LOGIN, AUTH_LOGIN_ERROR, AUTH_LOGOUT, AUTH_POPUP } from "../type";
+import { AUTH_FETCH_LOGIN, AUTH_LOGIN, AUTH_LOGIN_ERROR, AUTH_LOGOUT, AUTH_POPUP } from "../type";
 
 export function popupLogin(flag) {
     return {
@@ -30,15 +30,8 @@ export function loginError(error) {
 }
 
 export function fetchLogin(form) {
-    return async (dispatch, getState) => {
-        let res = await userApi.login(form)
-        if (res.error) {
-            dispatch(loginError(res.error))
-        } else {
-
-            dispatch(login(res.data))
-
-            dispatch(popupLogin(false))
-        }
+    return {
+        type: AUTH_FETCH_LOGIN,
+        payload: form
     }
 }

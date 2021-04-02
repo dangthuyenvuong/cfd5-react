@@ -1,19 +1,18 @@
-import React, { useState } from 'react'
-import {
-  BrowserRouter
-} from 'react-router-dom'
+import React from 'react'
+
 import './assets/css/custom.css'
 
 import routers from './routers'
 import renderRouters from './core/routerConfig'
 import AppProvider from './core/AppProver'
-// import { Provider } from 'react-redux'
-import store from './redux/store'
+
+import reducers from './redux/reducers'
+import mySaga from './redux/saga'
 
 function App() {
 
   return (
-    <AppProvider store={store}>
+    <AppProvider reducers={reducers} saga={mySaga}>
       {renderRouters(routers)}
     </AppProvider>
   );
