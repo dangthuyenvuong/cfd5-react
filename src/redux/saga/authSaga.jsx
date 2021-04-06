@@ -1,6 +1,9 @@
-import { call, put } from 'redux-saga/effects'
+import { call, put, take } from 'redux-saga/effects'
 import userApi from '../../api/userApi'
-import { login, loginError, popupLogin } from '../actions/authAction'
+import { login, loginError } from '../reducers/authReducer'
+import { COUNT_INCREMENT } from '../type'
+
+import { popupLogin } from '../reducers/authReducer'
 
 export function* fetchLogin(action) {
     let res = yield call(userApi.login, action.payload)
@@ -12,8 +15,10 @@ export function* fetchLogin(action) {
             user: res.data
         }))
         localStorage.setItem('token', JSON.stringify(res.data.token))
+
         yield put(login(res.data))
         yield put(popupLogin(false))
+
     }
 }
 

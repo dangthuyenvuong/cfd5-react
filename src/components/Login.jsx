@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import userApi from '../api/userApi'
 // import useAuth from '../core/useAuth'
 import useFormValidate from '../core/useFormValidate'
-import { fetchLogin, login, popupLogin } from '../redux/actions/authAction'
+import { popupLogin, fetchLogin, login } from '../redux/reducers/authReducer'
 
 export default React.forwardRef(function Login(prop, ref) {
     const dispatch = useDispatch()

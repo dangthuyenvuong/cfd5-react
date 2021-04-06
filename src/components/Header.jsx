@@ -3,7 +3,9 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { Link, NavLink, } from 'react-router-dom'
 import useDelayLink from '../core/useDelayLink'
-import { logout, popupLogin } from '../redux/actions/authAction';
+// import { logout } from '../redux/actions/authAction';
+import { popupLogin, logout } from '../redux/reducers/authReducer'
+
 export default function Header() {
 
 

@@ -38,7 +38,7 @@ function App({ children, reducers, saga }) {
     if (!store) {
         if (!reducers) reducers = () => { }
         store = createStore(reducers, composeEnhancers(applyMiddleware(sagaMiddleware, thunkFake)))
-        sagaMiddleware.run(saga)
+        sagaMiddleware.run(saga || function* () { })
     }
 
 
